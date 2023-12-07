@@ -25,37 +25,45 @@ def question2():
     return answerDiscount, answerNoise
 
 def question3a():
-    answerDiscount = 0.1
-    answerNoise = 0
-    answerLivingReward = 0.5
+    #Prefira a saída próxima (+1), arriscando o precipício (-10)
+    answerDiscount = 0.1 #indicando que recompensas futuras são menos significativas 
+    answerNoise = 0 # noise 0 para prosseguir logo para o caminho mais rapido
+    answerLivingReward = 0.5  #valor baixo para ir para o reward 1
     return answerDiscount, answerNoise, answerLivingReward
     # If not possible, return 'NOT POSSIBLE'
 
+
 def question3b():
-    answerDiscount = 0.3
-    answerNoise = 0.2
-    answerLivingReward = 0.1
+    #Prefira a saída próxima (+1), mas evitando o penhasco (-10)
+    answerDiscount = 0.3 # aumentar a significatividade das recompensas futuras
+    answerNoise = 0.2 # noise em 0.2 para confundir, fazendo para tomar o caminho mais longo
+    answerLivingReward = 0.1 #valor baixo para ir para o reward 1
     return answerDiscount, answerNoise, answerLivingReward
     # If not possible, return 'NOT POSSIBLE'
 
 def question3c():
-    answerDiscount = 0.1
-    answerNoise = 0
-    answerLivingReward = 5
+    #Prefira a saída mais distante (+10), arriscando o precipício (-10)
+    answerDiscount = 0.1 
+    answerNoise = 0 # noise 0 para preferir o caminho mais rapido
+    answerLivingReward = 5 #valor alto para preferir o reward 10
     return answerDiscount, answerNoise, answerLivingReward
     # If not possible, return 'NOT POSSIBLE'
 
 def question3d():
-    answerDiscount = 0.3
-    answerNoise = 0.2
-    answerLivingReward = 1
+    #Prefira a saída mais distante (+10), evitando a falésia (-10)
+    answerDiscount = 0.3 # aumentar a significatividade das recompensas futuras
+    answerNoise = 0.2 # noise para confundir, para ir para o caminho mais longo
+    answerLivingReward = 1 # valor alto para preferir o reward maior que 1
     return answerDiscount, answerNoise, answerLivingReward
     # If not possible, return 'NOT POSSIBLE'
 
 def question3e():
+    #Evite as saídas e o penhasco (para que um episódio nunca termine)
     answerDiscount = 0.3
     answerNoise = 0.2
-    answerLivingReward = 10
+    answerLivingReward = 10 # reward muito alto para preferir qualquer valor maior que 10
+    #mais o tabuleiro não apresenta nenhum reward maior que 10
+    #então vai procurar para sempre
     return answerDiscount, answerNoise, answerLivingReward
     # If not possible, return 'NOT POSSIBLE'
 
