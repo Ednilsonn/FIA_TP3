@@ -219,6 +219,7 @@ class ApproximateQAgent(PacmanQAgent):
         
         for arg in featureVector:
             # ajustar cada peso proporcionalmente ao diferenca temporal
+            #self.alpha controla a taxa de aprendizado => determinando a magnitude das atualizações de peso
             self.weights[arg] += self.alpha * diferenca * featureVector[arg]
 
     def final(self, state):
