@@ -200,14 +200,26 @@ class ApproximateQAgent(PacmanQAgent):
           where * is the dotProduct operator
         """
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        weight = self.getWeights() # obter os pessos
+        featureVector = self.featExtractor.getFeatures(state,action) #obter o estado e ação
+
+        return weight * featureVector # dar o devido peso ao vetor estado acção
+       
 
     def update(self, state, action, nextState, reward):
         """
            Should update your weights based on transition
         """
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        # obter as caracteristicas do estado e ação
+        featureVector = self.featExtractor.getFeatures(state, action) 
+        
+        #calcular a diferença temporal entre a recompensa atual e a recompensa descontada na proxima interação
+        diferenca = reward + self.discount * self.getValue(nextState) - self.getQValue(state, action) 
+        
+        for arg in featureVector:
+            # ajustar cada peso proporcionalmente ao diferenca temporal
+            self.weights[arg] += self.alpha * diferenca * featureVector[arg]
 
     def final(self, state):
         "Called at the end of each game."

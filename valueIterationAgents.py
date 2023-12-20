@@ -63,7 +63,7 @@ class ValueIterationAgent(ValueEstimationAgent):
         # Write value iteration code here
         "*** YOUR CODE HERE ***"
         
-        for _ in range(self.iterations):   # Usa self.iterations em vez de iterations
+        for iteration in range(self.iterations):   # Usa self.iterations em vez de iterations
             newValues = self.values.copy()  # Copia os valores para não modificá-los diretamente
 
             for state in self.mdp.getStates():  # Percorre cada estado
@@ -162,5 +162,48 @@ class PrioritizedSweepingValueIterationAgent(ValueIterationAgent):
         self.theta = theta
         ValueIterationAgent.__init__(self, mdp, discount, iterations)
 
+
+
+    def runValueIteration(self):
+        "*** YOUR CODE HERE ***"
+
+        pQueue = util.PriorityQueue()
+
+        predecessors = {}
+
+        #fid all predecessors
+        for estado in self.mdp.getStates():
+            if not self.mdp.isTerminal(estado):
+                for acao in self.mdp.getPossibleActions(estado):
+                    for stateAndProb in self.mdp.getTransitionStatesAndProbs(estado, acao):
+                        if stateAndProb[0] in predecessors:
+                            predecessors[stateAndProb[0]].add(estado)
+                        else:
+                            predecessors[stateAndProb[0]] = {estado}
+
+
+        for estado in self.mdp.getStates():
+            if not self.mdp.isTerminal(estado):
+                diff = abs(self.values[estado] - max([ \
+                self.computeQValueFromValues(estado, acao) for acao in \
+                self.mdp.getPossibleActions(estado) ]) )
+                #pushing negative into queue
+                pQueue.update(estado, -diff)
+
+        for iteration in range(self.iterations):
+            if pQueue.isEmpty():
+                break
+            estado = pQueue.pop()
+            if not self.mdp.isTerminal(estado):
+                self.values[estado] = max([self.computeQValueFromValues(estado, acao)\
+                 for acao in self.mdp.getPossibleActions(estado)])
+
+            for p in predecessors[estado]:
+                if not self.mdp.isTerminal(p):
+                    diff = abs(self.values[p] - max([self.computeQValueFromValues(p, acao)\
+                     for acao in self.mdp.getPossibleActions(p)]))
+
+                    if diff > self.theta:
+                            pQueue.update(p, -diff)
 
 
